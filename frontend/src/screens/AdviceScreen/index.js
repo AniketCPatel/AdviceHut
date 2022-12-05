@@ -31,21 +31,6 @@ const AdviceForm = () => {
       align: "center",
     },
     {
-      id: "amt",
-      label: "Cheque Amount",
-      minWidth: 150,
-    },
-    {
-      id: "agency",
-      label: "Agency Name",
-      minWidth: 250,
-    },
-    {
-      id: "imsi",
-      label: "Fund Head",
-      minWidth: 150,
-    },
-    {
       id: "iccId",
       label: "Bill Amount",
       minWidth: 150,
@@ -80,6 +65,21 @@ const AdviceForm = () => {
       id: "status",
       label: "Total Deduction",
       minWidth: 100,
+    },
+    {
+      id: "amt",
+      label: "Cheque Amount",
+      minWidth: 150,
+    },
+    {
+      id: "agency",
+      label: "Agency Name",
+      minWidth: 250,
+    },
+    {
+      id: "imsi",
+      label: "Fund Head",
+      minWidth: 150,
     },
   ];
 
