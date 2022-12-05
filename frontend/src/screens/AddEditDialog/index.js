@@ -6,40 +6,68 @@ import CustomizedDialog from "../../components/CustomizedDialog";
 import SearchableComboBox from "../../components/SearchableComboBox";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddEditDialog = (props) => {
-  const [bill, setBill] = useState(0);
+  const [billAmount, setBill] = useState(0);
   const [gst, setGST] = useState(0);
-  const [net, setNet] = useState(0);
+  const [netAmount, setNet] = useState(0);
   const [it, setIT] = useState(0);
   const [ls, setLS] = useState(0);
   const [deposit, setDeposit] = useState(0);
-  const [deduct, setDeduct] = useState(0);
-  const [cheque, setCheque] = useState(0);
-  const [agency, setAgency] = useState("");
+  const [deduction, setDeduct] = useState(0);
+  const [chequeAmount, setCheque] = useState(0);
+  const [agencyName, setAgency] = useState("");
   const [fundHead, setFundHead] = useState("");
   const [, setForceUpdate] = useState(false);
+  const [load, setLoad] = useState(false);
 
   const calculateValues = () => {
-    if (+bill > 250000) {
-      setGST(Math.ceil((+bill * 100 * (2 / 100)) / 113));
-    } else if (+bill <= 250000) {
+    if (+billAmount > 250000) {
+      setGST(Math.ceil((+billAmount * 100 * (2 / 100)) / 113));
+    } else if (+billAmount <= 250000) {
       setGST(0);
     }
-    setNet(+bill - +gst);
-    setIT(Math.ceil(+bill * (2 / 100)));
-    setLS(Math.ceil(+bill * (1 / 100)));
+    setNet(+billAmount - +gst);
+    setIT(Math.ceil(+billAmount * (2 / 100)));
+    setLS(Math.ceil(+billAmount * (1 / 100)));
     setDeduct(+deposit + ls + it);
-    setCheque(+net - +deduct);
+    setCheque(+netAmount - +deduction);
     setForceUpdate((old) => !old);
   };
 
   useEffect(() => {
     calculateValues();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bill, deposit]);
+  }, [billAmount, deposit]);
 
-  const addHandler = () => {};
+  const addHandler = () => {
+    setLoad(true);
+    axios
+      .post(`/api/advice`, {
+        billAmount,
+        gst,
+        netAmount,
+        it,
+        ls,
+        deposit,
+        deduction,
+        chequeAmount,
+        agencyName,
+        fundHead,
+      })
+      .then((res) => {
+        setLoad(false);
+        toast.success("Success");
+        props.handleClose();
+      })
+      .catch((err) => {
+        setLoad(false);
+        console.log("first", err);
+        toast.error(err);
+      });
+  };
 
   return (
     <CustomizedDialog
@@ -52,7 +80,7 @@ const AddEditDialog = (props) => {
               variant="contained"
               color="secondary"
               fullWidth
-              // disabled={loadingData}
+              disabled={load}
             >
               <AddCircleIcon /> &nbsp; {props?.mainName}
             </Button>
@@ -78,13 +106,13 @@ const AddEditDialog = (props) => {
             autoFocus
             required
             margin="dense"
-            id="bill"
+            id="billAmount"
             label="Bill Amount"
-            name="bill"
+            name="billAmount"
             type="number"
             variant="outlined"
             fullWidth
-            value={bill || ""}
+            value={billAmount || ""}
             onChange={(e) => {
               setBill(e.target.value);
             }}
@@ -119,13 +147,13 @@ const AddEditDialog = (props) => {
         <Grid item xs={12} md={3}>
           <TextField
             margin="dense"
-            id="net"
+            id="netAmount"
             label="Net Amount"
-            name="net"
+            name="netAmount"
             type="number"
             variant="outlined"
             fullWidth
-            value={net || ""}
+            value={netAmount || ""}
             inputProps={{ readOnly: true }}
             InputProps={{
               startAdornment: (
@@ -194,13 +222,13 @@ const AddEditDialog = (props) => {
         <Grid item xs={12} md={3}>
           <TextField
             margin="dense"
-            id="deduct"
+            id="deduction"
             label="Total Deduction"
-            name="deduct"
+            name="deduction"
             type="number"
             variant="outlined"
             fullWidth
-            value={deduct || ""}
+            value={deduction || ""}
             inputProps={{ readOnly: true }}
             InputProps={{
               startAdornment: (
@@ -212,13 +240,13 @@ const AddEditDialog = (props) => {
         <Grid item xs={12} md={3}>
           <TextField
             margin="dense"
-            id="cheque"
+            id="chequeAmount"
             label="Cheque Amount"
-            name="cheque"
+            name="chequeAmount"
             type="number"
             variant="outlined"
             fullWidth
-            value={cheque || ""}
+            value={chequeAmount || ""}
             inputProps={{ readOnly: true }}
             InputProps={{
               startAdornment: (
@@ -230,14 +258,14 @@ const AddEditDialog = (props) => {
         <Grid item xs={12} md={3}>
           <SearchableComboBox
             required
-            id="agency"
-            name="agency"
+            id="agencyName"
+            name="agencyName"
             label="Agency Name"
             onChange={(e) => {
               setAgency(e.target.value);
             }}
-            items={[]}
-            selectedValues={agency}
+            items={[{ _id: "1234567890", name: "Hello Test1" }]}
+            selectedValues={agencyName}
           />
         </Grid>
         <Grid item xs={12} md={3}>

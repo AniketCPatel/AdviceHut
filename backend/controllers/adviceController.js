@@ -5,7 +5,7 @@ const Advice = require("../models/adviceModel");
 // @desc        Get Advices
 // @route       GET /api/advice
 const getAdvices = asyncHandler(async (req, res) => {
-  const advice = await Advice.find();
+  const advice = await Advice.find().sort({ _id: -1 });
   res.status(200).json(advice);
 });
 

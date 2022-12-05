@@ -4,7 +4,9 @@ import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
+
 const filterOptions = createFilterOptions({ matchFrom: "any", limit: 100 });
+
 const SearchableComboBox = (props) => {
   const {
     _id,
@@ -21,10 +23,13 @@ const SearchableComboBox = (props) => {
     disabled,
     limitTags,
   } = props;
+
   const newItems = multi
     ? [{ _id: "All", name: "Select All" }, ...items]
     : items;
+
   const [allSelected, setAllSelected] = useState(false);
+
   useEffect(() => {
     if (multi) {
       if (items.length !== (selectedValues || []).length) {
@@ -34,6 +39,7 @@ const SearchableComboBox = (props) => {
       }
     }
   }, [items, selectedValues, multi]);
+
   return (
     <>
       <Autocomplete
@@ -71,7 +77,7 @@ const SearchableComboBox = (props) => {
           onChange(event);
         }}
         getOptionSelected={(options, value) => {
-          return options._id === value._id;
+          return options._id === value.name;
         }}
         renderInput={(params) => (
           <TextField
@@ -92,6 +98,7 @@ const SearchableComboBox = (props) => {
     </>
   );
 };
+
 SearchableComboBox.propTypes = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import CustomTableWithPage from "../../components/CustomTableWithPage";
 import CustomReportDownload from "../../components/CustomReportDownload";
@@ -14,12 +14,29 @@ import AddEditDialog from "../AddEditDialog";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import AddAgency from "../AddAgency";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import axios from "axios";
+import CachedIcon from "@material-ui/icons/Cached";
 
 const AdviceForm = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openAgency, setOpenAgency] = useState(false);
-  // const [passData, setPassData] = useState({});
+  const [tableData, setTableData] = useState([]);
+
+  const fetchData = () => {
+    axios
+      .get(`/api/advice`)
+      .then((res) => {
+        setTableData(res.data);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns = [
     {
@@ -31,60 +48,61 @@ const AdviceForm = () => {
       align: "center",
     },
     {
-      id: "iccId",
+      id: "billAmount",
       label: "Bill Amount",
       minWidth: 150,
     },
     {
-      id: "imsi",
+      id: "gst",
       label: "GST",
       minWidth: 150,
     },
     {
-      id: "specificationName",
+      id: "netAmount",
       label: "Net Amount",
       minWidth: 150,
     },
     {
-      id: "status",
+      id: "it",
       label: "I.T.",
       minWidth: 100,
     },
     {
-      id: "hlr",
+      id: "ls",
       label: "L.S.",
       minWidth: 100,
     },
     {
-      id: "iccId",
+      id: "deposit",
       label: "Deposit",
       minWidth: 150,
       color: "#009BDF",
     },
     {
-      id: "status",
+      id: "deduction",
       label: "Total Deduction",
       minWidth: 100,
     },
     {
-      id: "amt",
+      id: "chequeAmount",
       label: "Cheque Amount",
       minWidth: 150,
     },
     {
-      id: "agency",
+      id: "agencyName",
       label: "Agency Name",
       minWidth: 250,
     },
     {
-      id: "imsi",
+      id: "fundHead",
       label: "Fund Head",
       minWidth: 150,
     },
   ];
 
-  const rows = [
-    {
+  const rows = tableData.map((item) => {
+    return {
+      ...item,
       action: (
         <>
           <Tooltip title="Edit" placement="top" TransitionComponent={Zoom}>
@@ -108,58 +126,8 @@ const AdviceForm = () => {
           </Tooltip>
         </>
       ),
-      amt: 102912,
-      agency: "Aniket",
-    },
-    {
-      amt: 1232111,
-      agency: "C K Patel",
-    },
-    {
-      amt: 1212,
-      agency: "A234rewniket",
-    },
-    {
-      amt: 12123,
-      agency: "C Kwer Patel",
-    },
-    {
-      amt: 1232111,
-      agency: "C K Patel",
-    },
-    {
-      amt: 1212,
-      agency: "A234rewniket",
-    },
-    {
-      amt: 12123,
-      agency: "C Kwer Patel",
-    },
-    {
-      amt: 1232111,
-      agency: "C K Patel",
-    },
-    {
-      amt: 1212,
-      agency: "A234rewniket",
-    },
-    {
-      amt: 12123,
-      agency: "C Kwer Patel",
-    },
-    {
-      amt: 1232111,
-      agency: "C K Patel",
-    },
-    {
-      amt: 1212,
-      agency: "A234rewniket",
-    },
-    {
-      amt: 12123,
-      agency: "C Kwer Patel",
-    },
-  ];
+    };
+  });
 
   // const totalAmount = () => {
   //   let result = 0;
@@ -215,14 +183,12 @@ const AdviceForm = () => {
               placement="top"
               TransitionComponent={Zoom}
             >
-              <IconButton>
-                <PostAddIcon
-                  color="primary"
-                  onClick={() => {
-                    setOpen(true);
-                  }}
-                  fontSize="large"
-                />
+              <IconButton
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                <PostAddIcon color="primary" fontSize="large" />
               </IconButton>
             </Tooltip>
             <Tooltip
@@ -230,14 +196,12 @@ const AdviceForm = () => {
               placement="top"
               TransitionComponent={Zoom}
             >
-              <IconButton>
-                <GroupAddIcon
-                  style={{ color: "#1b5e20" }}
-                  onClick={() => {
-                    setOpenAgency(true);
-                  }}
-                  fontSize="large"
-                />
+              <IconButton
+                onClick={() => {
+                  setOpenAgency(true);
+                }}
+              >
+                <GroupAddIcon style={{ color: "#1b5e20" }} fontSize="large" />
               </IconButton>
             </Tooltip>
             {/* <Button
@@ -256,6 +220,15 @@ const AdviceForm = () => {
               data={rows}
               fileName={`AdviceData ${formatDateTime(new Date())}.xlsx`}
             />
+            <Tooltip title="Refresh" placement="top" TransitionComponent={Zoom}>
+              <IconButton
+                onClick={() => {
+                  fetchData();
+                }}
+              >
+                <CachedIcon color="primary" />
+              </IconButton>
+            </Tooltip>
           </CustomTableWithPage>
         </Paper>
       </div>
