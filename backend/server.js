@@ -1,10 +1,11 @@
 const path = require("path");
 const express = require("express");
-const dotenv = require("dotenv").config();
+const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 
+dotenv.config();
 connectDB();
 
 const app = express();
@@ -30,4 +31,8 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+const PORT = process.env.PORT || 5000;
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
+);
