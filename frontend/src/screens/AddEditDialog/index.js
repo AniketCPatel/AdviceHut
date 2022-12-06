@@ -94,8 +94,8 @@ const AddEditDialog = (props) => {
         deposit,
         deduction,
         chequeAmount,
-        agencyName: agency,
-        fundHead,
+        agencyName: agency.name,
+        fundHead: fundHead.name,
       })
       .then((res) => {
         setLoad(false);

@@ -31,7 +31,7 @@ const AdviceForm = () => {
       .then((res) => {
         setLoad(false);
         setTableData(res.data);
-        toast.success("Advice Records Fetched");
+        toast.success("Advice Record(s) Fetched");
       })
       .catch((err) => {
         setLoad(false);
