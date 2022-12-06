@@ -34,6 +34,18 @@ const AddEditDialog = (props) => {
       });
   };
 
+  const fetchFundHead = () => {
+    axios
+      .get(`/api/fundhead`)
+      .then((res) => {
+        setFundHead(res.data);
+        toast.success("Fund Head Records Fetched");
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
+
   const calculateValues = () => {
     if (+billAmount > 250000) {
       setGST(Math.ceil((+billAmount * 100 * (2 / 100)) / 113));
@@ -55,6 +67,7 @@ const AddEditDialog = (props) => {
 
   useEffect(() => {
     fetchAgencyName();
+    fetchFundHead();
   }, []);
 
   const addHandler = () => {
@@ -303,7 +316,7 @@ const AddEditDialog = (props) => {
             onChange={(e) => {
               setFundHead(e.target.value);
             }}
-            items={[]}
+            items={fundHead}
             selectedValues={fundHead}
           />
         </Grid>
