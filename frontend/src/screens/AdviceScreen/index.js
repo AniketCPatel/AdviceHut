@@ -25,13 +25,16 @@ const AdviceForm = () => {
   const [load, setLoad] = useState(false);
 
   const fetchData = () => {
+    setLoad(true);
     axios
       .get(`/api/advice`)
       .then((res) => {
+        setLoad(false);
         setTableData(res.data);
-        toast.success("Records Fetched");
+        toast.success("Advice Records Fetched");
       })
       .catch((err) => {
+        setLoad(false);
         toast.error(err);
       });
   };
@@ -41,15 +44,12 @@ const AdviceForm = () => {
   }, []);
 
   const deleteHandler = (id) => {
-    setLoad(true);
     axios
       .delete(`/api/advice/${id}`)
       .then((res) => {
-        setLoad(false);
         toast.success("Advice Deleted Successfully.");
       })
       .catch((err) => {
-        setLoad(false);
         toast.error(err);
       });
   };
@@ -165,7 +165,10 @@ const AdviceForm = () => {
           open={open}
           mainName="Add"
           secondName="Clear"
-          handleClose={(e) => {
+          handleClose={(e, success) => {
+            if (success) {
+              fetchData();
+            }
             setOpen(false);
           }}
           title="Create Advice"
@@ -192,8 +195,8 @@ const AdviceForm = () => {
         />
       )}
       <div style={{ padding: "10px 20px" }}>
-        <Paper elevation={7} style={{ marginTop: 20 }}>
-          <CustomTableWithPage loading={false} columns={columns} rows={rows}>
+        <Paper elevation={7} style={{ marginTop: 15 }}>
+          <CustomTableWithPage loading={load} columns={columns} rows={rows}>
             <Tooltip
               title="Add New Advice"
               placement="top"

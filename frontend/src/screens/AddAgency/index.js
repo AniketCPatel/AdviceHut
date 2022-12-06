@@ -30,7 +30,7 @@ const AddAgency = (props) => {
       .then((res) => {
         setLoad(false);
         setTableData(res.data);
-        toast.success("Records Fetched");
+        toast.success("Agency Record(s) Fetched");
       })
       .catch((err) => {
         setLoad(false);

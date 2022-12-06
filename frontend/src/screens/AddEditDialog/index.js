@@ -17,8 +17,8 @@ const AddEditDialog = (props) => {
   const [deposit, setDeposit] = useState(0);
   const [deduction, setDeduct] = useState(0);
   const [chequeAmount, setCheque] = useState(0);
-  const [agencyName, setAgency] = useState("");
-  const [fundHead, setFundHead] = useState("");
+  const [agency, setAgency] = useState({});
+  const [fundHead, setFundHead] = useState({});
   const [, setForceUpdate] = useState(false);
   const [load, setLoad] = useState(false);
 
@@ -79,7 +79,7 @@ const AddEditDialog = (props) => {
       toast.error("Deposit Required");
       return;
     }
-    if (!agencyName) {
+    if (!agency) {
       toast.error("Agency Name Required");
       return;
     }
@@ -94,13 +94,13 @@ const AddEditDialog = (props) => {
         deposit,
         deduction,
         chequeAmount,
-        agencyName,
+        agencyName: agency,
         fundHead,
       })
       .then((res) => {
         setLoad(false);
         toast.success("New Advice Created Successfully.");
-        props.handleClose();
+        props.handleClose(null, true);
       })
       .catch((err) => {
         setLoad(false);
@@ -297,15 +297,15 @@ const AddEditDialog = (props) => {
         <Grid item xs={12} md={3}>
           <SearchableComboBox
             required
-            id="agencyName"
-            name="agencyName"
+            id="agency"
+            name="agency"
             label="Agency Name"
             onChange={(e) => {
               setAgency(e.target.value);
             }}
             // items={[{ _id: "1234567890", name: "Hello Test1" }]}
-            items={agencyName}
-            selectedValues={agencyName}
+            items={agency}
+            selectedValues={agency || ""}
           />
         </Grid>
         <Grid item xs={12} md={3}>
@@ -317,7 +317,7 @@ const AddEditDialog = (props) => {
               setFundHead(e.target.value);
             }}
             items={fundHead}
-            selectedValues={fundHead}
+            selectedValues={fundHead || ""}
           />
         </Grid>
         <Grid item xs={12} md={6}></Grid>
