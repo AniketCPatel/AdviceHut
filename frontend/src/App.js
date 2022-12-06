@@ -1,6 +1,5 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -10,7 +9,13 @@ function App() {
   return (
     <>
       <div>
-        <ToastContainer />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: { background: "#333", color: "#FFF" },
+          }}
+        />
         <Header />
         <AdviceScreen />
         <Footer />

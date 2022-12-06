@@ -77,7 +77,7 @@ const SearchableComboBox = (props) => {
           onChange(event);
         }}
         getOptionSelected={(options, value) => {
-          return options._id === value.name;
+          return options._id === value._id;
         }}
         renderInput={(params) => (
           <TextField

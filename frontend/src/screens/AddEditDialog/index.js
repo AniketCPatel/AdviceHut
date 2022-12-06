@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, InputAdornment, TextField } from "@material-ui/core";
-// import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { exceptNumber } from "../../helper";
 import CustomizedDialog from "../../components/CustomizedDialog";
 import SearchableComboBox from "../../components/SearchableComboBox";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const AddEditDialog = (props) => {
   const [billAmount, setBill] = useState(0);
@@ -22,6 +21,18 @@ const AddEditDialog = (props) => {
   const [fundHead, setFundHead] = useState("");
   const [, setForceUpdate] = useState(false);
   const [load, setLoad] = useState(false);
+
+  const fetchAgencyName = () => {
+    axios
+      .get(`/api/agency`)
+      .then((res) => {
+        setAgency(res.data);
+        toast.success("Agency Records Fetched");
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
 
   const calculateValues = () => {
     if (+billAmount > 250000) {
@@ -42,7 +53,23 @@ const AddEditDialog = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [billAmount, deposit]);
 
+  useEffect(() => {
+    fetchAgencyName();
+  }, []);
+
   const addHandler = () => {
+    if (!billAmount) {
+      toast.error("Bill Amount Required");
+      return;
+    }
+    if (!deposit) {
+      toast.error("Deposit Required");
+      return;
+    }
+    if (!agencyName) {
+      toast.error("Agency Name Required");
+      return;
+    }
     setLoad(true);
     axios
       .post(`/api/advice`, {
@@ -59,12 +86,11 @@ const AddEditDialog = (props) => {
       })
       .then((res) => {
         setLoad(false);
-        toast.success("Success");
+        toast.success("New Advice Created Successfully.");
         props.handleClose();
       })
       .catch((err) => {
         setLoad(false);
-        console.log("first", err);
         toast.error(err);
       });
   };
@@ -112,7 +138,7 @@ const AddEditDialog = (props) => {
             type="number"
             variant="outlined"
             fullWidth
-            value={billAmount || ""}
+            value={Number(billAmount) || ""}
             onChange={(e) => {
               setBill(e.target.value);
             }}
@@ -208,7 +234,7 @@ const AddEditDialog = (props) => {
             type="number"
             variant="outlined"
             fullWidth
-            value={deposit || ""}
+            value={Number(deposit) || ""}
             onChange={(e) => {
               setDeposit(e.target.value);
             }}
@@ -264,7 +290,8 @@ const AddEditDialog = (props) => {
             onChange={(e) => {
               setAgency(e.target.value);
             }}
-            items={[{ _id: "1234567890", name: "Hello Test1" }]}
+            // items={[{ _id: "1234567890", name: "Hello Test1" }]}
+            items={agencyName}
             selectedValues={agencyName}
           />
         </Grid>

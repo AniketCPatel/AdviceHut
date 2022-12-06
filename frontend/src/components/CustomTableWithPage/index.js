@@ -82,6 +82,7 @@ const CustomTableWithPage = (props) => {
     disablePagination,
     disableSort,
     uniqueKey = "id",
+    rowsPerPageArr,
   } = props;
 
   const [searchText, setSearchText] = useState("");
@@ -104,7 +105,7 @@ const CustomTableWithPage = (props) => {
   const [page, setPage] = useState(0);
 
   const [rowsPerPage, setRowsPerPage] = useState(
-    disablePagination ? rows.length : 10
+    disablePagination ? rows.length : rowsPerPageArr ? rowsPerPageArr[0] : 10
   );
 
   //This will set the page according to the row count if pagination is disabled.
@@ -218,7 +219,7 @@ const CustomTableWithPage = (props) => {
         </TableContainer>
         {!disablePagination && (
           <TablePagination
-            rowsPerPageOptions={[10, 20, 50]}
+            rowsPerPageOptions={rowsPerPageArr || [10, 20, 50]}
             component="div"
             count={filtered_rows.length}
             rowsPerPage={rowsPerPage}
@@ -240,6 +241,7 @@ CustomTableWithPage.propTypes = {
   disablePagination: PropTypes.bool,
   disableSort: PropTypes.bool,
   uniqueKey: PropTypes.string,
+  rowsPerPageArr: PropTypes.array,
 };
 
 export default CustomTableWithPage;

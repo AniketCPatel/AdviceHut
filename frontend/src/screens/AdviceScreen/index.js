@@ -7,7 +7,7 @@ import {
   // GLOBAL_DISABLE_AUTO_CLOSE_TOAST,
 } from "../../helper";
 import { IconButton, Tooltip, Zoom } from "@material-ui/core";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import AddEditDialog from "../AddEditDialog";
@@ -22,12 +22,14 @@ const AdviceForm = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openAgency, setOpenAgency] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [load, setLoad] = useState(false);
 
   const fetchData = () => {
     axios
       .get(`/api/advice`)
       .then((res) => {
         setTableData(res.data);
+        toast.success("Records Fetched");
       })
       .catch((err) => {
         toast.error(err);
@@ -37,6 +39,20 @@ const AdviceForm = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const deleteHandler = (id) => {
+    setLoad(true);
+    axios
+      .delete(`/api/advice/${id}`)
+      .then((res) => {
+        setLoad(false);
+        toast.success("Advice Deleted Successfully.");
+      })
+      .catch((err) => {
+        setLoad(false);
+        toast.error(err);
+      });
+  };
 
   const columns = [
     {
@@ -50,17 +66,17 @@ const AdviceForm = () => {
     {
       id: "billAmount",
       label: "Bill Amount",
-      minWidth: 150,
+      minWidth: 110,
     },
     {
       id: "gst",
       label: "GST",
-      minWidth: 150,
+      minWidth: 100,
     },
     {
       id: "netAmount",
       label: "Net Amount",
-      minWidth: 150,
+      minWidth: 110,
     },
     {
       id: "it",
@@ -75,18 +91,18 @@ const AdviceForm = () => {
     {
       id: "deposit",
       label: "Deposit",
-      minWidth: 150,
+      minWidth: 100,
       color: "#009BDF",
     },
     {
       id: "deduction",
       label: "Total Deduction",
-      minWidth: 100,
+      minWidth: 140,
     },
     {
       id: "chequeAmount",
       label: "Cheque Amount",
-      minWidth: 150,
+      minWidth: 140,
     },
     {
       id: "agencyName",
@@ -120,7 +136,7 @@ const AdviceForm = () => {
               color="secondary"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                toast.warn("delete");
+                deleteHandler(item._id);
               }}
             />
           </Tooltip>
