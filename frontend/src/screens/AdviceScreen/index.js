@@ -48,6 +48,7 @@ const AdviceForm = () => {
       .delete(`/api/advice/${id}`)
       .then((res) => {
         toast.success("Advice Deleted Successfully.");
+        fetchData();
       })
       .catch((err) => {
         toast.error(err);
@@ -66,48 +67,48 @@ const AdviceForm = () => {
     {
       id: "billAmount",
       label: "Bill Amount",
-      minWidth: 110,
+      minWidth: 90,
     },
     {
       id: "gst",
       label: "GST",
-      minWidth: 100,
+      minWidth: 70,
     },
     {
       id: "netAmount",
       label: "Net Amount",
-      minWidth: 110,
+      minWidth: 90,
     },
     {
       id: "it",
       label: "I.T.",
-      minWidth: 100,
+      minWidth: 70,
     },
     {
       id: "ls",
       label: "L.S.",
-      minWidth: 100,
+      minWidth: 70,
     },
     {
       id: "deposit",
       label: "Deposit",
-      minWidth: 100,
+      minWidth: 70,
       color: "#009BDF",
     },
     {
       id: "deduction",
       label: "Total Deduction",
-      minWidth: 140,
+      minWidth: 90,
     },
     {
       id: "chequeAmount",
       label: "Cheque Amount",
-      minWidth: 140,
+      minWidth: 90,
     },
     {
       id: "agencyName",
       label: "Agency Name",
-      minWidth: 250,
+      minWidth: 150,
     },
     {
       id: "fundHead",

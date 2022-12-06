@@ -50,7 +50,7 @@ const AddAgency = (props) => {
     setAddLoad(true);
     axios
       .post(`/api/agency`, {
-        name: agencyName,
+        name: agencyName.toUpperCase(),
       })
       .then((res) => {
         setAddLoad(false);
@@ -70,6 +70,7 @@ const AddAgency = (props) => {
       .delete(`/api/agency/${id}`)
       .then((res) => {
         toast.success("Agency Deleted Successfully.");
+        fetchData();
       })
       .catch((err) => {
         toast.error(err);
@@ -140,7 +141,7 @@ const AddAgency = (props) => {
               onChange={(e) => {
                 setAgencyName(e.target.value);
               }}
-              // inputProps={{ style: { textTransform: "uppercase" } }}
+              inputProps={{ style: { textTransform: "uppercase" } }}
             />
           </Grid>
           <Grid item xs={12} sm={3}>

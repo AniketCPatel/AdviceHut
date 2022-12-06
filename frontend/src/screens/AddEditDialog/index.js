@@ -27,7 +27,6 @@ const AddEditDialog = (props) => {
       .get(`/api/agency`)
       .then((res) => {
         setAgency(res.data);
-        toast.success("Agency Records Fetched");
       })
       .catch((err) => {
         toast.error(err);
@@ -39,7 +38,6 @@ const AddEditDialog = (props) => {
       .get(`/api/fundhead`)
       .then((res) => {
         setFundHead(res.data);
-        toast.success("Fund Head Records Fetched");
       })
       .catch((err) => {
         toast.error(err);
