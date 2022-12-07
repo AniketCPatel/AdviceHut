@@ -17,16 +17,19 @@ const AddEditDialog = (props) => {
   const [deposit, setDeposit] = useState(0);
   const [deduction, setDeduct] = useState(0);
   const [chequeAmount, setCheque] = useState(0);
-  const [agency, setAgency] = useState({});
-  const [fundHead, setFundHead] = useState({});
+  const [agency, setAgency] = useState("");
+  const [fundHead, setFundHead] = useState("");
   const [, setForceUpdate] = useState(false);
   const [load, setLoad] = useState(false);
+
+  const [agencyList, setAgencyList] = useState([]);
+  const [fundHeadList, setFundHeadList] = useState([]);
 
   const fetchAgencyName = () => {
     axios
       .get(`/api/agency`)
       .then((res) => {
-        setAgency(res.data);
+        setAgencyList(res.data);
       })
       .catch((err) => {
         toast.error(err);
@@ -37,7 +40,7 @@ const AddEditDialog = (props) => {
     axios
       .get(`/api/fundhead`)
       .then((res) => {
-        setFundHead(res.data);
+        setFundHeadList(res.data);
       })
       .catch((err) => {
         toast.error(err);
@@ -301,8 +304,7 @@ const AddEditDialog = (props) => {
             onChange={(e) => {
               setAgency(e.target.value);
             }}
-            // items={[{ _id: "1234567890", name: "Hello Test1" }]}
-            items={agency}
+            items={agencyList}
             selectedValues={agency || ""}
           />
         </Grid>
@@ -314,7 +316,7 @@ const AddEditDialog = (props) => {
             onChange={(e) => {
               setFundHead(e.target.value);
             }}
-            items={fundHead}
+            items={fundHeadList}
             selectedValues={fundHead || ""}
           />
         </Grid>
