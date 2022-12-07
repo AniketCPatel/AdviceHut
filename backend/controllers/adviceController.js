@@ -97,7 +97,7 @@ const deleteAdvice = asyncHandler(async (req, res) => {
   const advice = await Advice.findById(req.params.id);
   if (advice) {
     await advice.remove();
-    res.json({ message: "Advice removed" });
+    res.status(200).json({ message: "Advice removed" });
   } else {
     res.status(404);
     throw new Error("Advice not found.");
