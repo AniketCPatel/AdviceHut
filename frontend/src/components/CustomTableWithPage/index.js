@@ -149,7 +149,7 @@ const CustomTableWithPage = (props) => {
       )}
 
       <Paper className={classes.root}>
-        <TableContainer style={{ maxHeight: "60vh", minHeight: "60vh" }}>
+        <TableContainer>
           <Table size="small" stickyHeader aria-label="sticky table">
             <EnhancedTableHead
               classes={classes}

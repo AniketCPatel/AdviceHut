@@ -17,8 +17,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import CachedIcon from "@material-ui/icons/Cached";
 
-const AddAgency = (props) => {
-  const [agencyName, setAgencyName] = useState("");
+const AddFundHead = (props) => {
+  const [fundHead, setFundHead] = useState("");
   const [addLoad, setAddLoad] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [load, setLoad] = useState(false);
@@ -26,7 +26,7 @@ const AddAgency = (props) => {
   const fetchData = () => {
     setLoad(true);
     axios
-      .get(`/api/agency`)
+      .get(`/api/fundhead`)
       .then((res) => {
         setLoad(false);
         setTableData(res.data);
@@ -42,19 +42,19 @@ const AddAgency = (props) => {
   }, []);
 
   const addHandler = () => {
-    if (!agencyName) {
-      toast.error("Agency Name Required");
+    if (!fundHead) {
+      toast.error("Fund Head Name Required");
       return;
     }
     setAddLoad(true);
     axios
-      .post(`/api/agency`, {
-        name: agencyName.toUpperCase(),
+      .post(`/api/fundhead`, {
+        name: fundHead.toUpperCase(),
       })
       .then((res) => {
         setAddLoad(false);
-        toast.success("New Agency Created Successfully.");
-        setAgencyName("");
+        toast.success("New FundHead Created Successfully.");
+        setFundHead("");
         fetchData();
         // props.handleClose();
       })
@@ -66,9 +66,9 @@ const AddAgency = (props) => {
 
   const deleteHandler = (id) => {
     axios
-      .delete(`/api/agency/${id}`)
+      .delete(`/api/fundhead/${id}`)
       .then((res) => {
-        toast.success("Agency Deleted Successfully.");
+        toast.success("FundHead Deleted Successfully.");
         fetchData();
       })
       .catch((err) => {
@@ -79,8 +79,8 @@ const AddAgency = (props) => {
   const columns = [
     {
       id: "name",
-      label: "Agency Name",
-      minWidth: 300,
+      label: "Fund Head",
+      minWidth: 250,
     },
     {
       id: "action",
@@ -112,7 +112,7 @@ const AddAgency = (props) => {
 
   return (
     <>
-      <CustomizedDialog title="Add New Agency" {...props}>
+      <CustomizedDialog title="Add New FundHead" {...props}>
         <Grid
           container
           spacing={1}
@@ -129,16 +129,16 @@ const AddAgency = (props) => {
               autoFocus
               required
               margin="dense"
-              id="agencyName"
-              label="Agency Name"
-              name="agencyName"
+              id="fundHead"
+              label="Fund Head"
+              name="fundHead"
               type="text"
               variant="outlined"
               fullWidth
               autoComplete="off"
-              value={agencyName || ""}
+              value={fundHead || ""}
               onChange={(e) => {
-                setAgencyName(e.target.value);
+                setFundHead(e.target.value);
               }}
               inputProps={{ style: { textTransform: "uppercase" } }}
             />
@@ -178,4 +178,4 @@ const AddAgency = (props) => {
   );
 };
 
-export default AddAgency;
+export default AddFundHead;

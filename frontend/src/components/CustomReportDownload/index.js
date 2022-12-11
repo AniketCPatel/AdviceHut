@@ -14,12 +14,11 @@ const CustomReportDownload = ({ data = [], fileName = "Data.xlsx" }) => {
 
   return (
     <Tooltip title="Download Report" placement="top" TransitionComponent={Zoom}>
-      <IconButton style={{ cursor: "pointer", color: "#e91e63" }}>
-        <GetAppIcon
-          fontSize="medium"
-          onClick={handleExport}
-          disabled={data.length === 0}
-        />
+      <IconButton
+        style={{ cursor: "pointer", color: "#e91e63" }}
+        onClick={handleExport}
+      >
+        <GetAppIcon fontSize="medium" disabled={data.length === 0} />
       </IconButton>
     </Tooltip>
   );

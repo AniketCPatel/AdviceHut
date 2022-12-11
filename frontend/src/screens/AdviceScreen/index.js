@@ -16,11 +16,14 @@ import AddAgency from "../AddAgency";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import axios from "axios";
 import CachedIcon from "@material-ui/icons/Cached";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
+import AddFundHead from "../AddFundHead";
 
 const AdviceForm = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openAgency, setOpenAgency] = useState(false);
+  const [openFundHead, setOpenFundHead] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [load, setLoad] = useState(false);
 
@@ -117,34 +120,36 @@ const AdviceForm = () => {
     },
   ];
 
-  const rows = tableData.map((item) => {
-    return {
-      ...item,
-      action: (
-        <>
-          <Tooltip title="Edit" placement="top" TransitionComponent={Zoom}>
-            <EditIcon
-              color="primary"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                // setPassData({});
-                setOpenEdit(true);
-              }}
-            />
-          </Tooltip>
-          <Tooltip title="Delete" placement="top" TransitionComponent={Zoom}>
-            <DeleteIcon
-              color="secondary"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                deleteHandler(item._id);
-              }}
-            />
-          </Tooltip>
-        </>
-      ),
-    };
-  });
+  const rows =
+    tableData &&
+    tableData.map((item) => {
+      return {
+        ...item,
+        action: (
+          <>
+            <Tooltip title="Edit" placement="top" TransitionComponent={Zoom}>
+              <EditIcon
+                color="primary"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  // setPassData({});
+                  setOpenEdit(true);
+                }}
+              />
+            </Tooltip>
+            <Tooltip title="Delete" placement="top" TransitionComponent={Zoom}>
+              <DeleteIcon
+                color="secondary"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  deleteHandler(item._id);
+                }}
+              />
+            </Tooltip>
+          </>
+        ),
+      };
+    });
 
   // const totalAmount = () => {
   //   let result = 0;
@@ -195,9 +200,21 @@ const AdviceForm = () => {
           }}
         />
       )}
+      {openFundHead && (
+        <AddFundHead
+          open={openFundHead}
+          handleClose={(e) => {
+            setOpenFundHead(false);
+          }}
+        />
+      )}
       <div style={{ padding: "10px 20px" }}>
         <Paper elevation={7} style={{ marginTop: 15 }}>
-          <CustomTableWithPage loading={load} columns={columns} rows={rows}>
+          <CustomTableWithPage
+            loading={load}
+            columns={columns}
+            rows={rows || []}
+          >
             <Tooltip
               title="Add New Advice"
               placement="top"
@@ -222,6 +239,22 @@ const AdviceForm = () => {
                 }}
               >
                 <GroupAddIcon style={{ color: "#1b5e20" }} fontSize="large" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title="Add New FundHead"
+              placement="top"
+              TransitionComponent={Zoom}
+            >
+              <IconButton
+                onClick={() => {
+                  setOpenFundHead(true);
+                }}
+              >
+                <PlaylistAddIcon
+                  style={{ color: "#ffea00" }}
+                  fontSize="large"
+                />
               </IconButton>
             </Tooltip>
             {/* <Button
